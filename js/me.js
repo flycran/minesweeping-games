@@ -195,6 +195,7 @@ f(() => {
          if (a !== undefined) return a[x]
       },
       getEle(x, y) {
+         if (x >= this.length || y >= this.length) return
          return this.eles[x * this.length + y]
       },
       stepsNum: 0,
@@ -203,7 +204,7 @@ f(() => {
    }
    main.en({
       click() {
-         if(this.hasClass('reveal')) return
+         if (this.hasClass('reveal') || this.hasClass('red')) return
          grid.stepsNum++
          fin[2].html = grid.stepsNum
          if (!grid.loading) {
@@ -217,9 +218,27 @@ f(() => {
             grid.get(x, y).down(this)
          }
       },
+      mousedown() {
+         const x = +this.attr('x')
+         const y = +this.attr('y')
+         if (this.hasClass('reveal')) {
+            cooMap.forEach(([cx, cy]) => {
+               const e = grid.getEle(x + cx, y + cy)
+               if (e) e.addClass('highlight')
+            })
+         }
+      },
       mouseup(event) {
+         const x = +this.attr('x')
+         const y = +this.attr('y')
          if (event.button === 2) {
             this.toggleClass('red')
+         }
+         if (this.hasClass('reveal')) {
+            cooMap.forEach(([cx, cy]) => {
+               const e = grid.getEle(x + cx, y + cy)
+               if (e) e.removeClass('highlight')
+            })
          }
       }
    }, '.lattice')
