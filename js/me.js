@@ -203,6 +203,7 @@ f(() => {
    }
    main.en({
       click() {
+         if(this.hasClass('reveal')) return
          grid.stepsNum++
          fin[2].html = grid.stepsNum
          if (!grid.loading) {
