@@ -2,7 +2,15 @@
 f(() => {
    const main = f('main')
    const flex = f('#flex')
-   const fin = f('header').child
+   const hea = f('header')
+   hea.html = `
+   难度：<input type="text" value="12">
+   尺寸：<input type="text" value="16">
+   步数：<span></span>
+   总格数：<span></span>
+   &#22320&#38647数量：<span></span>
+   待排雷格数：<span></span>`
+   const fin = hea.child
    fin[0].on('change', function () {
       if (this.value > 30) {
          this.value = 30
