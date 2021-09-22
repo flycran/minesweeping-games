@@ -118,6 +118,7 @@ f(() => {
          }
       }
       down(ele) {
+         if (this.expose) return
          if (this.mine) {
             if (grid.stepsNum <= grid.invincibleSteps) {
                ele.toggleClass('red')
@@ -226,19 +227,50 @@ f(() => {
             grid.get(x, y).down(this)
          }
       },
-      mousedown() {
+      mousedown(event) {
          const x = +this.attr('x')
          const y = +this.attr('y')
          highlightCoo = [x, y]
-         if (this.hasClass('reveal')) {
+         if (event.button === 2 && this.hasClass('reveal')) {
             cooMap.forEach(([cx, cy]) => {
                const e = grid.getEle(x + cx, y + cy)
                if (e) e.addClass('highlight')
             })
+         } else if (event.button === 0) {
+            let count = 0
+            cooMap.forEach(([cx, cy]) => {
+               const e = grid.getEle(x + cx, y + cy)
+               if (e && e.hasClass('red')) count++
+            })
+            const n = +this.f('i').attr('mask')
+            if (n) {
+               if (n === count) {
+                  for (const v of cooMap) {
+                     const [cx, cy] = v
+                     const ele = grid.getEle(x + cx, y + cy)
+                     if (!ele || ele.hasClass('red')) continue
+                     const e = grid.get(x + cx, y + cy)
+                     if (e) {
+                        if (e.mine) {
+                           alert('结束')
+                           grid.newGame()
+                           return
+                        } else {
+                           e.reveal()
+                        }
+                     }
+                  }
+               } else {
+                  cooMap.forEach(([cx, cy]) => {
+                     const e = grid.getEle(x + cx, y + cy)
+                     if (e) e.addClass('highlight')
+                  })
+               }
+            }
          }
       },
       mouseup(event) {
-         if(event.button === 2) {
+         if (event.button === 2 && !this.hasClass('reveal')) {
             this.toggleClass('red')
          }
       }
