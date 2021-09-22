@@ -202,6 +202,15 @@ f(() => {
       invincibleSteps: 3,
       eles: null
    }
+   let highlightCoo = [0, 0]
+   main.on('mouseup', function (event) {
+      const [x, y] = highlightCoo
+      console.log(highlightCoo);
+      cooMap.forEach(([cx, cy]) => {
+         const e = grid.getEle(x + cx, y + cy)
+         if (e) e.removeClass('highlight')
+      })
+   })
    main.en({
       click() {
          if (this.hasClass('reveal') || this.hasClass('red')) return
@@ -221,23 +230,11 @@ f(() => {
       mousedown() {
          const x = +this.attr('x')
          const y = +this.attr('y')
+         highlightCoo = [x, y]
          if (this.hasClass('reveal')) {
             cooMap.forEach(([cx, cy]) => {
                const e = grid.getEle(x + cx, y + cy)
                if (e) e.addClass('highlight')
-            })
-         }
-      },
-      mouseup(event) {
-         const x = +this.attr('x')
-         const y = +this.attr('y')
-         if (event.button === 2) {
-            this.toggleClass('red')
-         }
-         if (this.hasClass('reveal')) {
-            cooMap.forEach(([cx, cy]) => {
-               const e = grid.getEle(x + cx, y + cy)
-               if (e) e.removeClass('highlight')
             })
          }
       }
