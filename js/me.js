@@ -205,7 +205,6 @@ f(() => {
    let highlightCoo = [0, 0]
    main.on('mouseup', function (event) {
       const [x, y] = highlightCoo
-      console.log(highlightCoo);
       cooMap.forEach(([cx, cy]) => {
          const e = grid.getEle(x + cx, y + cy)
          if (e) e.removeClass('highlight')
@@ -236,6 +235,11 @@ f(() => {
                const e = grid.getEle(x + cx, y + cy)
                if (e) e.addClass('highlight')
             })
+         }
+      },
+      mouseup(event) {
+         if(event.button === 2) {
+            this.toggleClass('red')
          }
       }
    }, '.lattice')
