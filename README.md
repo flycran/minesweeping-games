@@ -2,6 +2,7 @@
 
 #### 介绍
 web技术开发的前端扫雷小游戏。
+https://flycran.github.io/minesweeping-games/
 #### 基本玩法
 
 更改难度和尺寸会自动重启游戏
